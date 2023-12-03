@@ -2,7 +2,9 @@ import {
 	Game,
 	parseGame,
 	isConfigurationPossible,
-	sumUpAnswer
+	determineFewestPossibleCubes,
+	sumUpGameIds,
+	sumUpCubePowers
 } from "./02-solution";
 
 describe("Day 02", () => {
@@ -101,7 +103,83 @@ describe("Day 02", () => {
 		});
 	});
 
-	describe("sumUpAnswer", () => {
+	describe("determineFewestPossibleCubes", () => {
+		it("should determine the correct answer for puzzle example 2, game 1", () => {
+			const input = {
+				id: 1,
+				draws: [
+					{ red: 4, green: 0, blue: 3 },
+					{ red: 1, green: 2, blue: 6 },
+					{ red: 0, green: 2, blue: 0 }
+				]
+			};
+
+			const result = determineFewestPossibleCubes(input);
+
+			expect(result).toEqual({ red: 4, green: 2, blue: 6 });
+		});
+
+		it("should determine the correct answer for puzzle example 2, game 2", () => {
+			const input = {
+				id: 2,
+				draws: [
+					{ red: 0, green: 2, blue: 1 },
+					{ red: 1, green: 3, blue: 4 },
+					{ red: 0, green: 1, blue: 1 }
+				]
+			};
+
+			const result = determineFewestPossibleCubes(input);
+
+			expect(result).toEqual({ red: 1, green: 3, blue: 4 });
+		});
+
+		it("should determine the correct answer for puzzle example 2, game 3", () => {
+			const input = {
+				id: 3,
+				draws: [
+					{ red: 20, green: 8, blue: 6 },
+					{ red: 4, green: 13, blue: 5 },
+					{ red: 1, green: 5, blue: 0 }
+				]
+			};
+
+			const result = determineFewestPossibleCubes(input);
+
+			expect(result).toEqual({ red: 20, green: 13, blue: 6 });
+		});
+
+		it("should determine the correct answer for puzzle example 2, game 4", () => {
+			const input = {
+				id: 4,
+				draws: [
+					{ red: 3, green: 1, blue: 6 },
+					{ red: 6, green: 3, blue: 0 },
+					{ red: 14, green: 3, blue: 15 }
+				]
+			};
+
+			const result = determineFewestPossibleCubes(input);
+
+			expect(result).toEqual({ red: 14, green: 3, blue: 15 });
+		});
+
+		it("should determine the correct answer for puzzle example 2, game 5", () => {
+			const input = {
+				id: 5,
+				draws: [
+					{ red: 6, green: 3, blue: 1 },
+					{ red: 1, green: 2, blue: 2 }
+				]
+			};
+
+			const result = determineFewestPossibleCubes(input);
+
+			expect(result).toEqual({ red: 6, green: 3, blue: 2 });
+		});
+	});
+
+	describe("sumUpGameIds", () => {
 		it("should sum up the puzzle answer by adding up the IDs of the passed games", () => {
 			const input = [
 				{ id: 1 },
@@ -109,9 +187,25 @@ describe("Day 02", () => {
 				{ id: 5 }
 			] as Game[];
 
-			const result = sumUpAnswer(input);
+			const result = sumUpGameIds(input);
 
 			expect(result).toEqual(8);
+		});
+	});
+
+	describe("sumUpCubePowers", () => {
+		it("should sum up the powers of the list of minimal possible cube numbers",  () => {
+			const input = [
+				{ red: 4, green: 2, blue: 6 },
+				{ red: 1, green: 3, blue: 4 },
+				{ red: 20, green: 13, blue: 6 },
+				{ red: 14, green: 3, blue: 15 },
+				{ red: 6, green: 3, blue: 2 }
+			];
+
+			const result = sumUpCubePowers(input);
+
+			expect(result).toEqual(2286);
 		});
 	});
 });

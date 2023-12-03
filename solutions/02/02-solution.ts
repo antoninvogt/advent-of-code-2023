@@ -41,8 +41,22 @@ function isConfigurationPossible(bagContents: BagContents, gameDraws: CubeNumber
 	});
 }
 
-function sumUpAnswer(games: Game[]): number {
+function determineFewestPossibleCubes(game: Game): BagContents {
+	return game.draws.reduce((fewestCubes, draw) => {
+		return {
+			red: Math.max(draw.red, fewestCubes.red),
+			green: Math.max(draw.green, fewestCubes.green),
+			blue: Math.max(draw.blue, fewestCubes.blue)
+		};
+	}, { red: 0, green: 0, blue: 0 });
+}
+
+function sumUpGameIds(games: Game[]): number {
 	return games.reduce((total, game) => total + game.id, 0);
+}
+
+function sumUpCubePowers(fewestCubeConfigs: BagContents[]): number {
+	return fewestCubeConfigs.reduce((total, cubes) => total + cubes.red * cubes.green * cubes.blue, 0);
 }
 
 async function solve(): Promise<string[]> {
@@ -51,10 +65,14 @@ async function solve(): Promise<string[]> {
 	
 	const games = puzzleInput.map(parseGame);
 	const validGames = games.filter((game) => isConfigurationPossible(allegedBagContents, game.draws));
-	const partOneAnswer = sumUpAnswer(validGames);
+	const partOneAnswer = sumUpGameIds(validGames);
 
+	const minimalCubeConfigs = games.map(determineFewestPossibleCubes);
+	const partTwoAnswer = sumUpCubePowers(minimalCubeConfigs);
+	
 	return [
-		String(partOneAnswer)
+		String(partOneAnswer),
+		String(partTwoAnswer)
 	];
 }
 
@@ -62,6 +80,8 @@ export {
 	Game,
 	parseGame,
 	isConfigurationPossible,
-	sumUpAnswer,
+	determineFewestPossibleCubes,
+	sumUpGameIds,
+	sumUpCubePowers,
 	solve
 }
