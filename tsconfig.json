@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "include": ["solutions/**/*.ts"],
+  "exclude": ["node_modules"]
+}
