@@ -30,14 +30,13 @@ function parseSeeds(puzzleInput: string[]): number[] {
 
 function parseMap(puzzleInput: string[], mapIdentifier: MapIdentifier): Map {
 	const headingIndex = puzzleInput.findIndex((puzzleInputLine) => puzzleInputLine.startsWith(mapIdentifier));
-	const mapLength = puzzleInput.slice(headingIndex).findIndex((puzzleInputLine) => puzzleInputLine === "\n");
+	const mapLength = puzzleInput.slice(headingIndex).findIndex((puzzleInputLine) => puzzleInputLine === "");
 	const rangeEndIndex = (mapLength !== -1) ? headingIndex + mapLength : puzzleInput.length - 1;
 	const relevantLines = puzzleInput.slice(headingIndex + 1, rangeEndIndex);
 
 	return {
 		id: mapIdentifier,
 		ranges: relevantLines
-			.map((line) => line.replace("\n", ""))
 			.map((line) => line.split(" "))
 			.map((splitLine) => splitLine.map(Number) as Range)
 	}

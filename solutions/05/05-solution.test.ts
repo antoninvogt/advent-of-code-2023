@@ -10,39 +10,39 @@ import {
 
 describe("Day 05", () => {
 	const examplePuzzleInput = [
-		"seeds: 79 14 55 13\n",
-		"\n",
-		"seed-to-soil map:\n",
-		"50 98 2\n",
-		"52 50 48\n",
-		"\n",
-		"soil-to-fertilizer map:\n",
-		"0 15 37\n",
-		"37 52 2\n",
-		"39 0 15\n",
-		"\n",
-		"fertilizer-to-water map:\n",
-		"49 53 8\n",
-		"0 11 42\n",
-		"42 0 7\n",
-		"57 7 4\n",
-		"\n",
-		"water-to-light map:\n",
-		"88 18 7\n",
-		"18 25 70\n",
-		"\n",
-		"light-to-temperature map:\n",
-		"45 77 23\n",
-		"81 45 19\n",
-		"68 64 13\n",
-		"\n",
-		"temperature-to-humidity map:\n",
-		"0 69 1\n",
-		"1 0 69\n",
-		"\n",
-		"humidity-to-location map:\n",
-		"60 56 37\n",
-		"56 93 4\n",
+		"seeds: 79 14 55 13",
+		"",
+		"seed-to-soil map:",
+		"50 98 2",
+		"52 50 48",
+		"",
+		"soil-to-fertilizer map:",
+		"0 15 37",
+		"37 52 2",
+		"39 0 15",
+		"",
+		"fertilizer-to-water map:",
+		"49 53 8",
+		"0 11 42",
+		"42 0 7",
+		"57 7 4",
+		"",
+		"water-to-light map:",
+		"88 18 7",
+		"18 25 70",
+		"",
+		"light-to-temperature map:",
+		"45 77 23",
+		"81 45 19",
+		"68 64 13",
+		"",
+		"temperature-to-humidity map:",
+		"0 69 1",
+		"1 0 69",
+		"",
+		"humidity-to-location map:",
+		"60 56 37",
+		"56 93 4",
 		""
 	]
 
@@ -106,6 +106,58 @@ describe("Day 05", () => {
 			];
 
 			expect(result).toEqual([ 81, 14, 57, 13 ]);
+		});
+
+		it("should handle a case where the destination range starts at 0", () => {
+			const seedToSoilMap = {
+				id: MapIdentifier.SEED_TO_SOIL,
+				ranges: [
+					[ 0, 50, 5 ]
+				]
+			} as Map;
+
+			const result = findCorrespondingNumber(seedToSoilMap, 51);
+
+			expect(result).toEqual(1);
+		});
+
+		it("should handle a case where the source range starts at 0", () => {
+			const seedToSoilMap = {
+				id: MapIdentifier.SEED_TO_SOIL,
+				ranges: [
+					[ 50, 0, 5 ]
+				]
+			} as Map;
+
+			const result = findCorrespondingNumber(seedToSoilMap, 1);
+
+			expect(result).toEqual(51);
+		});
+
+		it("should handle a case where the source number is above the source range", () => {
+			const seedToSoilMap = {
+				id: MapIdentifier.SEED_TO_SOIL,
+				ranges: [
+					[ 50, 0, 5 ]
+				]
+			} as Map;
+
+			const result = findCorrespondingNumber(seedToSoilMap, 6);
+
+			expect(result).toEqual(6);
+		});
+
+		it("should handle a case where the source number is below the source range", () => {
+			const seedToSoilMap = {
+				id: MapIdentifier.SEED_TO_SOIL,
+				ranges: [
+					[ 100, 50, 5 ]
+				]
+			} as Map;
+
+			const result = findCorrespondingNumber(seedToSoilMap, 49);
+
+			expect(result).toEqual(49);
 		});
 	});
 
