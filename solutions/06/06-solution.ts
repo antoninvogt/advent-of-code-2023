@@ -22,6 +22,24 @@ function parseInput(inputLines: string[]): Race[] {
 	});
 }
 
+function parseBigRace(inputLines: string[]): Race {
+	const raceTimesLine = inputLines[0];
+	const recordsLine = inputLines[1];
+
+	const raceTime = Number(
+		raceTimesLine
+		.replace(/Time:\s+/, "")
+		.replace(/\s+/g, "")
+	);
+	const recordTime = Number(
+		recordsLine
+		.replace(/Distance:\s+/, "")
+		.replace(/\s+/g, "")
+	);
+
+	return { time: raceTime, record: recordTime };
+}
+
 function determineRecordInputNumbers(race: Race): [ number, number ] {
 	// D = (time - b) * (t * c), where D is distance, time is race time, b is button push time, and c is speed per time interval the button is pushed (so, 1)
 	// After some moving terms around, comes to
@@ -49,16 +67,20 @@ async function solve(): Promise<string[]> {
 
 	const races = parseInput(puzzleInput);
 	const winningInputs = races.map(determineNumberOfWinningInputs);
+	const resultOne = winningInputs.reduce((total, next) => total * next, 1);
 
-	const result = winningInputs.reduce((total, next) => total * next, 1);
+	const bigRace = parseBigRace(puzzleInput);
+	const resultTwo = determineNumberOfWinningInputs(bigRace);
 
 	return [
-		String(result)
+		String(resultOne),
+		String(resultTwo)
 	];
 }
 
 export {
 	parseInput,
+	parseBigRace,
 	determineRecordInputNumbers,
 	determineNumberOfWinningInputs,
 	solve
